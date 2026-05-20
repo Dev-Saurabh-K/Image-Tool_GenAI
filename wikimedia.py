@@ -1,17 +1,26 @@
-# Search English Wikipedia for up to 20 pages containing information about Jupiter
 import requests
 
+url = "https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch=banana&gsrnamespace=6&prop=imageinfo&iiprop=url&format=json"
 
-url = 'https://commons.wikimedia.org/w/api.php?action=query&generator=search&gsrsearch={topic}&gsrnamespace=6&prop=imageinfo&iiprop=url&format=json'
 headers = {
-    'User-Agent': 'MediaWiki REST API docs examples/0.1 (https://www.mediawiki.org/wiki/API_talk:REST_API)'
-}
-params = {
-    'q': 'jupiter',
-    'limit': '20'
+    "User-Agent": "Mozilla/5.0"
 }
 
-response = requests.get(url, headers=headers, params=params)
-data = response.json()
+try:
+    response = requests.get(
+        url=url,
+        headers=headers,
+        timeout=10
+    )
 
-print(data)
+    print("Status Code:", response.status_code)
+
+    if response.status_code == 200:
+        data = response.json()
+        print(data)
+    else:
+        print("Error:")
+        print(response.text)
+
+except requests.exceptions.RequestException as e:
+    print("Request failed:", e)
